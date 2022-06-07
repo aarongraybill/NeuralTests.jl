@@ -2,8 +2,15 @@ using NeuralTests
 
 
 """
-Given a neural 
+Compute the output value of a network given a set of inputs (a `lookup_table`)
 
+The function is relatively neat and picks up performance gains whenever possible
+
+    1. if you happen to know intermediate values (like if you computed a more) simple network
+     then you can skip straiight to the intermediate steps
+    2. unnecessary nodes will not be evaluated
+    3. when there are a large number of output nodes, presumably morer and more can be pulled
+        from the lookup_table instead of being computed again
 """
 function compute_neural_net(net::Network,lookup_table::Dict{Node,Float64},output_nodes::Set{Node})
     @assert keys(lookup_table) ⊆ net.nodes
