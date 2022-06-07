@@ -12,14 +12,15 @@ Node1.edges = Set([Edge1])
 Node2.edges = Set([Edge1])
 net = n.Network(Set([Node1,Node2]),Set([Edge1]),Dict(Edge1=> 5.0))
 
-Node3 = n.Node()
+Node3 = n.Node("Node3")
 Edge2 = n.Edge(Node1,Node3)
 push!(Node1.edges,Edge2)
 push!(Node3.edges,Edge2)
 bad_net = n.Network(Set([Node1,Node2]),Set([Edge1,Edge2]),Dict(Edge1=>5.0,Edge2=>6.0))
 
 new_net = deepcopy(net)
-n.add_node!(new_net,node_is_origin_for=Dict(n.get_nodes(new_net,"Node1")=>5.0),opt_text="lil_guy")
+n.add_node!(new_net,"lil_guy")
+n.add_edge!(new_net,"lil_guy","Node1",5.0)
 
 @testset "NeuralTests.jl" begin
     @test get(new_net.weights,n.get_edges(new_net,"lil_guy","Node1"),"Not Found")==5
