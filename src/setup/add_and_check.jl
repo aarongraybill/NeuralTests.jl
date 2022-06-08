@@ -89,7 +89,7 @@ function add_node!(
     end
 
     push!(net.nodes,new_node)
-    
+    return new_node
 end
 
 function add_node!(
