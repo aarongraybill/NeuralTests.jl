@@ -18,7 +18,7 @@ function compute_neural_net(net::Network,lookup_table::Dict{Node,Float64},output
     output_vals = Dict{Node,Float64}()
     [o.opt_text for o in output_nodes]
     for node in output_nodes
-        run_sum = 0.0
+        run_sum = get(net.biases,node,missing)
         origins = setdiff([e.origin for e ∈ node.edges],[node]) #exclude nodes where you are the input
 
         for o_node ∈ keys(lookup_table) ∩ origins # the values we do have

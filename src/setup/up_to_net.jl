@@ -32,11 +32,12 @@ target!(e::Edge) = e.target::Node
     nodes::Set{Node} = Set{Node}()
     edges::Set{Edge} = Set{Edge}()
     weights::Dict{Edge,Float64} = Dict{Edge,Float64}()
-    function Network(nodes::Set{Node},edges::Set{Edge},weights::Dict{Edge,Float64})
+    biases::Dict{Node,Float64} = Dict{Node,Float64}()
+    function Network(nodes::Set{Node},edges::Set{Edge},weights::Dict{Edge,Float64},biases::Dict{Node,Float64})
         [edges!(node) for node in nodes]
         [origin!(edge) for edge in edges]
         [target!(edge) for edge in edges]
         #retype the edges and nodes appropriately
-        new(nodes,edges,weights)
+        new(nodes,edges,weights,biases)
     end
 end

@@ -66,6 +66,7 @@ I create any necessary edges implied by function input
 function add_node!(
     net::Network,
     opt_text::String="",
+    bias::Float64=0.0,
     node_is_target_of::Dict{Node,Float64}=Dict{Node,Float64}(),
     node_is_origin_for::Dict{Node,Float64}=Dict{Node,Float64}())
     @assert keys(node_is_origin_for) ⊆ net.nodes
@@ -89,12 +90,14 @@ function add_node!(
     end
 
     push!(net.nodes,new_node)
+    merge!(net.biases,Dict(new_node=>bias))
     
 end
 
 function add_node!(
     net::Network,
     opt_text::String="",
+    bias::Float64=0.0,
     node_is_target_of::Union{Array{Tuple{String,Float64}},Missing}=missing,
     node_is_origin_for::Union{Array{Tuple{String,Float64}},Missing}=missing)
 
@@ -115,7 +118,7 @@ function add_node!(
         end
     end
 
-    add_node!(net,opt_text::String,targ_dict,orig_dict)
+    add_node!(net,opt_text::String,bias,targ_dict,orig_dict)
 end
 
 
