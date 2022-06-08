@@ -90,8 +90,8 @@ function add_node!(
     end
 
     push!(net.nodes,new_node)
-    merge!(net.biases,Dict(new_node=>bias))
-    
+    merge!(net.biases,Dict(new_node=>bias)) 
+    return new_node
 end
 
 function add_node!(
