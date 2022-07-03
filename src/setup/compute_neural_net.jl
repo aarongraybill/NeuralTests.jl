@@ -37,3 +37,25 @@ function compute_neural_net(net::Network,lookup_table::Dict{Node,Float64},output
     end
     return output_vals
 end
+
+function hebbs_values(net::Network,lookup_table::Dict{Node,Float64})
+    @assert keys(lookup_table) ⊆ net.nodes
+    for node in net.nodes
+        run_sum = get(net.biases,node,missing)
+        origins = setdiff([e.origin for e ∈ node.edges],[node]) #exclude nodes where you are the input
+
+        for o_node ∈ keys(lookup_table) ∩ origins # the values we do have
+            temp_val = get(lookup_table,o_node,"Value Not found")
+            temp_weight = get_weight(net,o_node,node)
+            run_sum = run_sum+temp_val*temp_weight
+        end
+        for o_node ∈ setdiff(origins,keys(lookup_table)) # the values we don't have
+            temp_weight = get_weight(net,o_node,node)
+            temp_val_dict = compute_neural_net(net,lookup_table,Set([o_node]))
+            temp_val = get(temp_val_dict,o_node,"uh-oh")
+            run_sum = run_sum+temp_weight*temp_val
+        end
+        merge!(lookup_table,Dict(node => run_sum))
+    end
+    return lookup_table
+end
